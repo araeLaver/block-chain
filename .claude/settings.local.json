@@ -6,7 +6,11 @@
       "Bash(powershell -Command \"$env:CLAUDE_CODE_MAX_OUTPUT_TOKENS = ''64000''; $env:CLAUDE_CODE_MAX_OUTPUT_TOKENS\")",
       "Bash(git init:*)",
       "Bash(git config:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

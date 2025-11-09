@@ -1,0 +1,58 @@
+name: 📝 커밋 히스토리 문서화
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  update-commit-history:
+    name: 커밋 히스토리 업데이트
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 저장소 체크아웃
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 전체 히스토리 가져오기
+
+      - name: 📊 커밋 히스토리 생성
+        run: |
+          echo "# 📜 프로젝트 커밋 히스토리" > COMMIT_HISTORY.md
+          echo "" >> COMMIT_HISTORY.md
+          echo "> 이 문서는 자동으로 생성됩니다. (GitHub Actions)" >> COMMIT_HISTORY.md
+          echo "" >> COMMIT_HISTORY.md
+          echo "## 📊 통계" >> COMMIT_HISTORY.md
+          echo "" >> COMMIT_HISTORY.md
+
+          TOTAL_COMMITS=$(git rev-list --count HEAD)
+          CONTRIBUTORS=$(git log --format='%aN' | sort -u | wc -l)
+          FIRST_COMMIT=$(git log --reverse --format='%ai' | head -1 | cut -d' ' -f1)
+          LAST_COMMIT=$(git log --format='%ai' | head -1 | cut -d' ' -f1)
+
+          echo "- **총 커밋 수**: $TOTAL_COMMITS" >> COMMIT_HISTORY.md
+          echo "- **기여자 수**: $CONTRIBUTORS" >> COMMIT_HISTORY.md
+          echo "- **첫 커밋**: $FIRST_COMMIT" >> COMMIT_HISTORY.md
+          echo "- **최근 커밋**: $LAST_COMMIT" >> COMMIT_HISTORY.md
+          echo "" >> COMMIT_HISTORY.md
+
+          echo "## 📝 상세 커밋 히스토리" >> COMMIT_HISTORY.md
+          echo "" >> COMMIT_HISTORY.md
+
+          git log --pretty=format:'### %s%n%n- **작성자**: %an%n- **날짜**: %ai%n- **커밋**: `%h`%n%n```%n%b%n```%n%n----%n' --reverse >> COMMIT_HISTORY.md
+
+      - name: 📤 변경사항 커밋
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add COMMIT_HISTORY.md
+
+          if git diff --staged --quiet; then
+            echo "변경사항 없음"
+          else
+            git commit -m "자동 생성: 커밋 히스토리 업데이트 📝"
+            git push
+          fi

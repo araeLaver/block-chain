@@ -1,0 +1,112 @@
+name: 📈 프로젝트 통계
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # 매주 일요일 자정
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    name: 프로젝트 통계 업데이트
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 저장소 체크아웃
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 📊 프로젝트 통계 생성
+        run: |
+          echo "# 📊 프로젝트 통계" > PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+          echo "> 마지막 업데이트: $(date '+%Y-%m-%d %H:%M:%S KST')" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+
+          echo "## 📝 코드 통계" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+
+          # 총 라인 수
+          TOTAL_LINES=$(find . -name "*.js" -o -name "*.sol" -o -name "*.jsx" -o -name "*.md" | xargs wc -l | tail -1 | awk '{print $1}')
+          echo "- **총 라인 수**: $(printf "%'d" $TOTAL_LINES)" >> PROJECT_STATS.md
+
+          # JavaScript 파일
+          if [ -n "$(find . -name "*.js" -o -name "*.jsx")" ]; then
+            JS_LINES=$(find . -name "*.js" -o -name "*.jsx" | xargs wc -l | tail -1 | awk '{print $1}')
+            JS_FILES=$(find . -name "*.js" -o -name "*.jsx" | wc -l)
+            echo "- **JavaScript 파일**: $JS_FILES 개 ($(printf "%'d" $JS_LINES) 줄)" >> PROJECT_STATS.md
+          fi
+
+          # Solidity 파일
+          if [ -n "$(find . -name "*.sol")" ]; then
+            SOL_LINES=$(find . -name "*.sol" | xargs wc -l | tail -1 | awk '{print $1}')
+            SOL_FILES=$(find . -name "*.sol" | wc -l)
+            echo "- **Solidity 파일**: $SOL_FILES 개 ($(printf "%'d" $SOL_LINES) 줄)" >> PROJECT_STATS.md
+          fi
+
+          # Markdown 파일
+          if [ -n "$(find . -name "*.md")" ]; then
+            MD_LINES=$(find . -name "*.md" | xargs wc -l | tail -1 | awk '{print $1}')
+            MD_FILES=$(find . -name "*.md" | wc -l)
+            echo "- **문서 파일**: $MD_FILES 개 ($(printf "%'d" $MD_LINES) 줄)" >> PROJECT_STATS.md
+          fi
+
+          echo "" >> PROJECT_STATS.md
+
+          echo "## 🔄 Git 통계" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+
+          TOTAL_COMMITS=$(git rev-list --count HEAD)
+          echo "- **총 커밋 수**: $TOTAL_COMMITS" >> PROJECT_STATS.md
+
+          CONTRIBUTORS=$(git log --format='%aN' | sort -u | wc -l)
+          echo "- **기여자 수**: $CONTRIBUTORS" >> PROJECT_STATS.md
+
+          FIRST_COMMIT_DATE=$(git log --reverse --format='%ai' | head -1 | cut -d' ' -f1)
+          echo "- **프로젝트 시작**: $FIRST_COMMIT_DATE" >> PROJECT_STATS.md
+
+          DAYS_SINCE_START=$(( ($(date +%s) - $(date -d "$FIRST_COMMIT_DATE" +%s)) / 86400 ))
+          echo "- **프로젝트 진행**: $DAYS_SINCE_START 일" >> PROJECT_STATS.md
+
+          echo "" >> PROJECT_STATS.md
+
+          echo "## 👥 상위 기여자" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+          echo "| 순위 | 이름 | 커밋 수 |" >> PROJECT_STATS.md
+          echo "|------|------|---------|" >> PROJECT_STATS.md
+          git log --format='%aN' | sort | uniq -c | sort -rn | head -5 | awk '{printf "| %d | %s | %d |\n", NR, $2, $1}' >> PROJECT_STATS.md
+
+          echo "" >> PROJECT_STATS.md
+
+          echo "## 📅 최근 활동 (최근 10개 커밋)" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+          echo "| 날짜 | 커밋 메시지 | 작성자 |" >> PROJECT_STATS.md
+          echo "|------|------------|--------|" >> PROJECT_STATS.md
+          git log -10 --pretty=format:'| %ad | %s | %an |' --date=short >> PROJECT_STATS.md
+
+          echo "" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+
+          echo "## 📂 디렉토리 구조" >> PROJECT_STATS.md
+          echo "" >> PROJECT_STATS.md
+          echo '```' >> PROJECT_STATS.md
+          tree -L 3 -I 'node_modules|.git|cache|artifacts' || find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' -not -path '*/cache/*' -not -path '*/artifacts/*' | head -30
+          echo '```' >> PROJECT_STATS.md
+
+      - name: 📤 변경사항 커밋
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add PROJECT_STATS.md
+
+          if git diff --staged --quiet; then
+            echo "변경사항 없음"
+          else
+            git commit -m "자동 생성: 프로젝트 통계 업데이트 📊"
+            git push
+          fi
