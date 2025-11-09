@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(setx:*)",
+      "Bash(set CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000)",
+      "Bash(powershell -Command \"$env:CLAUDE_CODE_MAX_OUTPUT_TOKENS = ''64000''; $env:CLAUDE_CODE_MAX_OUTPUT_TOKENS\")",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
