@@ -74,8 +74,9 @@ contract LoyaltyToken is ERC20, Ownable {
      * @dev 컨트랙트 생성자
      * @param _maxSupply 최대 발행량 (0 = 무제한)
      */
-    constructor(uint256 _maxSupply) ERC20("Loyalty Points", "LPT") Ownable(msg.sender) {
+    constructor(uint256 _maxSupply) ERC20("Loyalty Points", "LPT") {
         maxSupply = _maxSupply;
+        _transferOwnership(msg.sender);
     }
 
     // ============================================

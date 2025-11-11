@@ -64,6 +64,31 @@
 - **비교 분석**: 같은 기능을 두 방식으로 구현
 
 ### 🔍 3. 심도 있는 비교
+
+#### 백엔드 vs 블록체인 시각적 비교
+
+```mermaid
+graph LR
+    subgraph Backend["백엔드 시스템"]
+        direction TB
+        BE1[⚡ 빠름: ~10ms]
+        BE2[💰 저렴: 월 5만원]
+        BE3[✏️ 수정 가능]
+        BE4[🔒 제한적 투명성]
+    end
+
+    subgraph Blockchain["블록체인 시스템"]
+        direction TB
+        BC1[🐌 느림: 15초~5분]
+        BC2[💸 비쌈: 건당 수천원]
+        BC3[🔐 수정 불가]
+        BC4[🌐 완전 공개]
+    end
+
+    style Backend fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Blockchain fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+
 | 항목 | 백엔드 | 블록체인 |
 |-----|-------|---------|
 | 속도 | 즉시 (~10ms) | 15초~5분 |
@@ -173,6 +198,34 @@ npm test
 
 ### 🎯 추천 학습 순서
 
+```mermaid
+graph TD
+    Start([📚 학습 시작]) --> Step1[1단계: 개념 이해<br/>1주]
+    Step1 --> Step1a[블록체인_쉬운_설명_실전_비교.md]
+    Step1a --> Step1b[블록체인_기초_완벽_가이드.md]
+
+    Step1b --> Step2[2단계: 코드 비교<br/>1-2주]
+    Step2 --> Step2a[백엔드 샘플 실행]
+    Step2a --> Step2b[블록체인 샘플 실행]
+    Step2b --> Step2c[두 방식 비교 분석]
+
+    Step2c --> Step3[3단계: 직접 개발<br/>2-4주]
+    Step3 --> Step3a[로컬 환경 실습]
+    Step3a --> Step3b[테스트넷 배포]
+    Step3b --> Step3c[나만의 프로젝트]
+
+    Step3c --> Step4[4단계: 심화 학습<br/>지속적]
+    Step4 --> Step4a[보안]
+    Step4 --> Step4b[최적화]
+    Step4 --> Step4c[고급 패턴]
+
+    style Start fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Step1 fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Step2 fill:#ffd43b,stroke:#fab005,color:#000
+    style Step3 fill:#ff8787,stroke:#fa5252,color:#fff
+    style Step4 fill:#da77f2,stroke:#9c36b5,color:#fff
+```
+
 #### 1단계: 개념 이해 (1주)
 ```
 1. 블록체인_쉬운_설명_실전_비교.md 읽기
@@ -251,6 +304,36 @@ npm test
 ### 🏪 포인트 시스템 (Loyalty Points)
 
 동일한 기능을 **백엔드**와 **블록체인** 두 방식으로 구현
+
+#### 시스템 아키텍처
+
+```mermaid
+graph TB
+    subgraph "동일한 기능, 다른 구현"
+        Feature[포인트 시스템<br/>적립/사용/전송/조회]
+    end
+
+    Feature --> Backend
+    Feature --> Blockchain
+
+    subgraph Backend["백엔드 방식"]
+        direction TB
+        API[Express API]
+        MySQL[(MySQL DB)]
+        API --> MySQL
+    end
+
+    subgraph Blockchain["블록체인 방식"]
+        direction TB
+        Contract[LoyaltyToken.sol]
+        Network[Ethereum Network]
+        Contract -.-> Network
+    end
+
+    style Feature fill:#da77f2,stroke:#9c36b5,color:#fff
+    style Backend fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Blockchain fill:#51cf66,stroke:#2f9e44,color:#fff
+```
 
 #### 주요 기능
 

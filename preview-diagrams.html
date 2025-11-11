@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블록체인 다이어그램 미리보기</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+        }
+        .diagram-container {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .description {
+            background: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .mermaid {
+            text-align: center;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 블록체인 학습 자료 - 다이어그램 미리보기</h1>
+
+    <div class="note">
+        <strong>💡 사용 방법:</strong> 이 HTML 파일을 브라우저에서 열면 모든 다이어그램을 바로 확인할 수 있습니다!
+        <br><strong>파일 위치:</strong> <code>block-chain/preview-diagrams.html</code>
+    </div>
+
+    <h2>1. 은행 vs 블록체인 (중앙화 vs 탈중앙화)</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 전통적인 은행 시스템(중앙화)과 블록체인 시스템(탈중앙화)의 구조적 차이를 보여줍니다.
+        </div>
+        <h3>중앙화 시스템 (은행)</h3>
+        <div class="mermaid">
+graph LR
+    A[나] -->|송금 요청| B[🏦 은행<br/>모든 권한 보유]
+    B -->|승인 후 전송| C[친구]
+
+    style B fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A fill:#4dabf7,stroke:#1971c2,color:#fff
+    style C fill:#4dabf7,stroke:#1971c2,color:#fff
+        </div>
+
+        <h3>탈중앙화 시스템 (블록체인)</h3>
+        <div class="mermaid">
+graph TD
+    A[나] -->|트랜잭션 전송| B[네트워크]
+    B --> C[검증자 1]
+    B --> D[검증자 2]
+    B --> E[검증자 3]
+    B --> F[검증자 N...]
+
+    C --> G{과반수<br/>승인?}
+    D --> G
+    E --> G
+    F --> G
+
+    G -->|승인| H[블록체인에 기록]
+    H --> I[친구 수령]
+
+    style A fill:#4dabf7,stroke:#1971c2,color:#fff
+    style B fill:#51cf66,stroke:#2f9e44,color:#fff
+    style C fill:#ffd43b,stroke:#fab005,color:#000
+    style D fill:#ffd43b,stroke:#fab005,color:#000
+    style E fill:#ffd43b,stroke:#fab005,color:#000
+    style F fill:#ffd43b,stroke:#fab005,color:#000
+    style G fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style H fill:#51cf66,stroke:#2f9e44,color:#fff
+    style I fill:#4dabf7,stroke:#1971c2,color:#fff
+        </div>
+    </div>
+
+    <h2>2. 블록체인 구조 (체인으로 연결된 블록)</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 블록들이 이전 블록의 해시를 포함하여 체인으로 연결되는 구조입니다. 하나를 변조하면 모든 후속 블록이 무효화됩니다.
+        </div>
+        <div class="mermaid">
+graph LR
+    subgraph Block1["블록 #1 (제네시스)"]
+        direction TB
+        B1H["해시: 0x000abc"]
+        B1D["데이터:<br/>민수 → 철수: 100원"]
+        B1P["이전 해시: 0"]
+        B1T["타임스탬프"]
+    end
+
+    subgraph Block2["블록 #2"]
+        direction TB
+        B2H["해시: 0x000def"]
+        B2D["데이터:<br/>영희 → 민수: 50원"]
+        B2P["이전 해시: 0x000abc"]
+        B2T["타임스탬프"]
+    end
+
+    subgraph Block3["블록 #3"]
+        direction TB
+        B3H["해시: 0x000ghi"]
+        B3D["데이터:<br/>철수 → 영희: 75원"]
+        B3P["이전 해시: 0x000def"]
+        B3T["타임스탬프"]
+    end
+
+    Block1 ==>|체인으로 연결| Block2
+    Block2 ==>|체인으로 연결| Block3
+    Block3 -.->|계속 이어짐| Block4[...]
+
+    style Block1 fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Block2 fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Block3 fill:#ffd43b,stroke:#fab005,color:#000
+        </div>
+    </div>
+
+    <h2>3. 백엔드 vs 블록체인 아키텍처</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 포인트 시스템을 백엔드와 블록체인 두 가지 방식으로 구현한 아키텍처 비교입니다.
+        </div>
+        <h3>백엔드 아키텍처 (중앙 서버)</h3>
+        <div class="mermaid">
+graph TB
+    subgraph "사용자들"
+        U1[👤 사용자 1]
+        U2[👤 사용자 2]
+        U3[👤 사용자 3]
+    end
+
+    subgraph "중앙 서버"
+        API[Express API Server]
+        DB[(MySQL<br/>포인트 데이터)]
+        Admin[🔐 관리자<br/>모든 권한]
+    end
+
+    U1 -->|HTTP Request| API
+    U2 -->|HTTP Request| API
+    U3 -->|HTTP Request| API
+
+    API -->|Query| DB
+    Admin -->|직접 수정 가능| DB
+
+    style Admin fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style DB fill:#ffd43b,stroke:#fab005,color:#000
+    style API fill:#51cf66,stroke:#2f9e44,color:#fff
+        </div>
+
+        <h3>블록체인 아키텍처 (분산 네트워크)</h3>
+        <div class="mermaid">
+graph TB
+    subgraph "사용자들"
+        U1[👤 사용자 1<br/>지갑]
+        U2[👤 사용자 2<br/>지갑]
+        U3[👤 사용자 3<br/>지갑]
+    end
+
+    subgraph "이더리움 네트워크"
+        SC[Smart Contract<br/>LoyaltyToken.sol]
+        N1[노드 1]
+        N2[노드 2]
+        N3[노드 3]
+        N4[노드 N...]
+    end
+
+    U1 -->|트랜잭션| SC
+    U2 -->|트랜잭션| SC
+    U3 -->|트랜잭션| SC
+
+    SC -.->|복제| N1
+    SC -.->|복제| N2
+    SC -.->|복제| N3
+    SC -.->|복제| N4
+
+    style SC fill:#51cf66,stroke:#2f9e44,color:#fff
+    style N1 fill:#4dabf7,stroke:#1971c2,color:#fff
+    style N2 fill:#4dabf7,stroke:#1971c2,color:#fff
+    style N3 fill:#4dabf7,stroke:#1971c2,color:#fff
+    style N4 fill:#4dabf7,stroke:#1971c2,color:#fff
+        </div>
+    </div>
+
+    <h2>4. 포인트 적립 프로세스 비교</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 포인트를 적립하는 과정을 백엔드와 블록체인에서 어떻게 다르게 처리하는지 보여줍니다.
+        </div>
+        <h3>백엔드 방식</h3>
+        <div class="mermaid">
+flowchart TD
+    Start([사용자 포인트 적립 요청]) --> Auth{인증<br/>확인}
+    Auth -->|실패| Fail1[❌ 401 Unauthorized]
+    Auth -->|성공| Validate{입력값<br/>검증}
+    Validate -->|실패| Fail2[❌ 400 Bad Request]
+    Validate -->|성공| TxBegin[트랜잭션 시작]
+    TxBegin --> Update[UPDATE users<br/>SET points = points + amount]
+    Update --> Insert[INSERT INTO<br/>point_transactions]
+    Insert --> Commit[커밋]
+    Commit --> Success[✅ 포인트 적립 완료]
+
+    style Start fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Fail1 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Fail2 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+        </div>
+
+        <h3>블록체인 방식</h3>
+        <div class="mermaid">
+flowchart TD
+    Start([사용자 포인트 적립 요청]) --> CheckOwner{onlyOwner<br/>확인}
+    CheckOwner -->|실패| Fail1[❌ Revert:<br/>소유자만 실행 가능]
+    CheckOwner -->|성공| ValidateAddr{주소<br/>검증}
+    ValidateAddr -->|실패| Fail2[❌ Revert:<br/>유효하지 않은 주소]
+    ValidateAddr -->|성공| ValidateAmt{금액<br/>검증}
+    ValidateAmt -->|실패| Fail3[❌ Revert:<br/>0보다 커야 함]
+    ValidateAmt -->|성공| CheckSupply{최대 발행량<br/>체크}
+    CheckSupply -->|초과| Fail4[❌ Revert:<br/>발행량 초과]
+    CheckSupply -->|정상| Mint[토큰 민팅<br/>balanceOf 증가]
+    Mint --> Event[이벤트 발생<br/>PointsEarned]
+    Event --> TxPool[트랜잭션 풀에 추가]
+    TxPool --> Mining[채굴자가 블록에 포함]
+    Mining --> Confirm[블록 확인<br/>15초~수분]
+    Confirm --> Success[✅ 블록체인에 영구 기록]
+
+    style Start fill:#4dabf7,stroke:#1971c2,color:#fff
+    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Fail1 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Fail2 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Fail3 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Fail4 fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Mining fill:#ffd43b,stroke:#fab005,color:#000
+        </div>
+    </div>
+
+    <h2>5. 학습 로드맵 (6개월)</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 완전 초보부터 블록체인 개발자가 되기까지의 24주 학습 계획입니다.
+        </div>
+        <div class="mermaid">
+gantt
+    title 블록체인 개발자 6개월 로드맵
+    dateFormat YYYY-MM-DD
+    section Level 1: 기초
+    블록체인 개념 이해           :l1a, 2025-01-01, 7d
+    암호학 기초                  :l1b, after l1a, 7d
+    이더리움 기초                :l1c, after l1b, 7d
+    Solidity 기초                :l1d, after l1c, 7d
+
+    section Level 2: 실전 기초
+    Solidity 심화                :l2a, after l1d, 21d
+    스마트 컨트랙트 개발          :l2b, after l2a, 14d
+    테스팅과 보안                :l2c, after l2b, 14d
+
+    section Level 3: 프론트엔드
+    React & Web3 연동            :l3a, after l2c, 21d
+    DApp 프로젝트                :l3b, after l3a, 7d
+
+    section Level 4: 고급
+    고급 주제                    :l4a, after l3b, 28d
+    포트폴리오 프로젝트           :l4b, after l4a, 28d
+        </div>
+    </div>
+
+    <h2>6. NFT 마켓플레이스 하이브리드 아키텍처</h2>
+    <div class="diagram-container">
+        <div class="description">
+            <strong>설명:</strong> 실무에서는 블록체인과 백엔드를 함께 사용합니다. 중요한 데이터는 블록체인에, 빠른 처리가 필요한 부분은 백엔드에 둡니다.
+        </div>
+        <div class="mermaid">
+graph TB
+    subgraph "프론트엔드"
+        UI[React App<br/>사용자 인터페이스]
+    end
+
+    subgraph "블록체인 (Ethereum)"
+        NFT[NFT Contract<br/>ERC-721]
+        Market[Marketplace Contract<br/>거래 로직]
+        Wallet[지갑 연결<br/>MetaMask]
+    end
+
+    subgraph "백엔드 서버 (Node.js)"
+        API[REST API]
+        DB[(PostgreSQL<br/>메타데이터)]
+        IPFS[IPFS<br/>이미지 저장]
+        Cache[Redis<br/>캐싱]
+    end
+
+    subgraph "외부 서비스"
+        Email[이메일 알림]
+        Search[검색 엔진<br/>Elasticsearch]
+    end
+
+    UI -->|NFT 거래| NFT
+    UI -->|NFT 구매| Market
+    UI -->|지갑 연결| Wallet
+
+    UI -->|메타데이터 조회| API
+    UI -->|검색| API
+
+    NFT -.->|이벤트 구독| API
+    Market -.->|거래 이벤트| API
+
+    API --> DB
+    API --> IPFS
+    API --> Cache
+    API --> Email
+    API --> Search
+
+    style NFT fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Market fill:#51cf66,stroke:#2f9e44,color:#fff
+    style API fill:#4dabf7,stroke:#1971c2,color:#fff
+    style DB fill:#ffd43b,stroke:#fab005,color:#000
+        </div>
+    </div>
+
+    <div class="note">
+        <strong>✅ 모든 다이어그램을 확인했습니다!</strong>
+        <br><br>
+        이 다이어그램들은 다음 파일에 포함되어 있습니다:
+        <ul>
+            <li>📄 <code>README.md</code></li>
+            <li>📄 <code>블록체인_쉬운_설명_실전_비교.md</code></li>
+            <li>📄 <code>블록체인_기초_완벽_가이드.md</code></li>
+        </ul>
+        <br>
+        <strong>다음 단계:</strong>
+        <ol>
+            <li>VS Code에서 Markdown Preview Enhanced 설치</li>
+            <li>또는 GitHub에 푸시해서 확인</li>
+            <li>학습 문서 읽기 시작! 🚀</li>
+        </ol>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#4dabf7',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#1971c2',
+                lineColor: '#495057',
+                secondaryColor: '#51cf66',
+                tertiaryColor: '#ffd43b'
+            }
+        });
+    </script>
+</body>
+</html>
