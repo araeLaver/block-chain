@@ -4,7 +4,7 @@
 
 ## 📊 통계
 
-- **총 커밋 수**: 4
+- **총 커밋 수**: 7
 - **기여자 수**: 2
 - **첫 커밋**: 2025-11-09
 - **최근 커밋**: 2025-11-11
@@ -150,6 +150,73 @@
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>
+
+```
+
+----
+
+### 자동 생성: 커밋 히스토리 업데이트 📝
+
+- **작성자**: github-actions[bot]
+- **날짜**: 2025-11-11 02:01:30 +0000
+- **커밋**: `16445a5`
+
+```
+
+```
+
+----
+
+### 문서: 백엔드 vs 블록체인 코드 상세 비교 문서 추가
+
+- **작성자**: araeLaver
+- **날짜**: 2025-11-11 12:41:51 +0900
+- **커밋**: `cbab070`
+
+```
+## 새로운 파일
+
+- CODE_COMPARISON.md: 백엔드와 블록체인 코드 1:1 비교
+  * 9개 주요 영역 상세 비교
+  * 실제 코드 스니펫 포함
+  * Mermaid 다이어그램 7개
+  * 비용, 성능, 보안 비교표
+  * 하이브리드 아키텍처 제안
+
+## 비교 항목 (9개)
+
+1. 포인트 적립: SQL UPDATE vs mint()
+2. 포인트 사용: SQL DELETE vs burn()
+3. 잔액 조회: SELECT vs balanceOf()
+4. 거래 내역: MySQL 테이블 vs 이벤트 로그
+5. 권한 관리: 미들웨어 vs onlyOwner
+6. 트랜잭션 처리: MySQL 트랜잭션 vs 원자적 실행
+7. 에러 처리: try-catch vs require/revert
+8. 배포 및 업그레이드: 무중단 배포 vs 불변 배포
+9. 비용 비교: 월 $37 vs 트랜잭션당 $0.50-$5
+
+## 특징
+
+- 실제 코드 라인 번호 참조
+- 시퀀스/플로우 다이어그램으로 시각화
+- 언제 무엇을 사용해야 하는지 가이드
+- 하이브리드 아키텍처 실무 예시
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+```
+
+----
+
+### Merge branch 'main' of https://github.com/araeLaver/block-chain
+
+- **작성자**: araeLaver
+- **날짜**: 2025-11-11 12:54:49 +0900
+- **커밋**: `37f6149`
+
+```
 
 ```
 
